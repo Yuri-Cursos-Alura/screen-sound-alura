@@ -1,12 +1,13 @@
 ﻿namespace screen_sound_alura
 {
-    public class ScreenSound
+    static public class ScreenSound
     {
 
-        static List<string> Bandas { get; set; } = [];
+        static List<string> Bandas { get; set; } = ["Calipso", "Hitsune Miku", "Skillet"];
+        static int ResponseDelay = 1500;
         static void Main(string[] args)
         {
-            ShowGreetings();
+            
             Menu();
 
         }
@@ -16,6 +17,8 @@
             var run = true;
             while (run)
             {
+                ShowGreetings();
+
                 Console.WriteLine("----------------------");
                 Console.WriteLine("1 - Registrar banda");
                 Console.WriteLine("2 - Mostrar todas as bandas");
@@ -34,7 +37,8 @@
                         RegistrarBanda();
                         break;
                     case 2:
-                        throw new NotImplementedException();
+                        MostrarBandas();
+                        break;
                     case 3:
                         throw new NotImplementedException();
                     case 4:
@@ -52,6 +56,27 @@
 
         }
 
+        static void MostrarBandas()
+        {
+            if (Bandas.Count == 0)
+            {
+                Console.WriteLine("Não tem bandas para mostrar :<");
+                Thread.Sleep(ResponseDelay);
+                return;
+            }
+
+            ShowTitle("Bandas: ");
+
+            foreach (var banda in Bandas)
+            {
+                Console.WriteLine($"- {banda}");
+            }
+
+
+            Console.WriteLine("\n(Pressione 'enter' tecla para voltar)");
+            Console.ReadLine();
+        }
+
         static void RegistrarBanda()
         {
             ShowTitle("Registro de banda");
@@ -60,7 +85,7 @@
             Bandas.Add(nomeBanda);
 
             Console.WriteLine($"\nBanda {nomeBanda} registrada com sucesso!");
-            Thread.Sleep(1500);
+            Thread.Sleep(ResponseDelay);
         }
 
         static void ShowGreetings()
