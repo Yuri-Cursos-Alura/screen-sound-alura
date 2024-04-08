@@ -2,6 +2,8 @@
 {
     public class ScreenSound
     {
+
+        static List<string> Bandas { get; set; } = [];
         static void Main(string[] args)
         {
             ShowGreetings();
@@ -9,17 +11,10 @@
 
         }
 
-        static void ShowGreetings()
-        {
-            Console.WriteLine("************************************");
-            Console.WriteLine("Bem vindo ao Screen Sound!");
-            Console.WriteLine("************************************");
-        }
-
         static void Menu()
         {
             var run = true;
-            while(run)
+            while (run)
             {
                 Console.WriteLine("----------------------");
                 Console.WriteLine("1 - Registrar banda");
@@ -29,12 +24,15 @@
                 Console.WriteLine("0 - Sair");
                 Console.WriteLine("----------------------");
 
-                var input = GetUserInput();
+                var input = GetUserInputInt();
+
+                Console.Clear();
 
                 switch (input)
                 {
                     case 1:
-                        throw new NotImplementedException();
+                        RegistrarBanda();
+                        break;
                     case 2:
                         throw new NotImplementedException();
                     case 3:
@@ -48,11 +46,37 @@
                         Console.WriteLine("Opção inválida.");
                         break;
                 }
+
+                Console.Clear();
             }
-            
+
         }
 
-        static int GetUserInput(string inputText = "")
+        static void RegistrarBanda()
+        {
+            ShowTitle("Registro de banda");
+            var nomeBanda = GetUserInputStr("Digite o nome da banda: ");
+
+            Bandas.Add(nomeBanda);
+
+            Console.WriteLine($"\nBanda {nomeBanda} registrada com sucesso!");
+            Thread.Sleep(1500);
+        }
+
+        static void ShowGreetings()
+        {
+            Console.WriteLine("************************************");
+            Console.WriteLine("Bem vindo ao Screen Sound!");
+            Console.WriteLine("************************************");
+        }
+
+        static void ShowTitle(string title)
+        {
+            Console.WriteLine("************************************");
+            Console.WriteLine(title);
+        }
+
+        static int GetUserInputInt(string inputText = "")
         {
             Console.WriteLine(inputText);
 
@@ -73,6 +97,24 @@
                 }
 
                 return value;
+            }
+        }
+
+        static string GetUserInputStr(string inputText = "")
+        {
+            Console.WriteLine(inputText);
+
+            while (true)
+            {
+                var input = Console.ReadLine();
+
+                if (string.IsNullOrWhiteSpace(input))
+                {
+                    Console.WriteLine("Por favor, digite algo.");
+                    continue;
+                }
+
+                return input;
             }
         }
     }
