@@ -9,7 +9,7 @@
             { "Skillet", [10] },
             { "Hatsune Miko", [10] }
         };
-        static int ResponseDelay = 1500;
+        const int ResponseDelay = 1500;
         static void Main(string[] args)
         {
             
@@ -45,9 +45,11 @@
                         MostrarBandas();
                         break;
                     case 3:
-                        throw new NotImplementedException();
+                        AvaliarBanda();
+                        break;
                     case 4:
-                        throw new NotImplementedException();
+                        ExibirMediaBanda();
+                        break;
                     case 0:
                         run = false;
                         break;
@@ -61,25 +63,106 @@
 
         }
 
+        static void ExibirMediaBanda()
+        {
+            if (Bandas.Count == 0)
+            {
+                Console.WriteLine("Não tem bandas para ver a média :<");
+                Wait();
+                return;
+            }
+
+            ShowTitle("Escolha uma banda para ver a média: ");
+
+            ListarBandas();
+
+            var nomeBanda = GetUserInputStr();
+
+            if (!Bandas.ContainsKey(nomeBanda))
+            {
+                Console.Clear();
+                Console.WriteLine("Banda não encontrada!");
+                Wait();
+                return;
+            }
+
+            var media = (float) Bandas[nomeBanda].Average();
+
+            Console.WriteLine($"\nA média da banda selecionada ({nomeBanda}) é: {media}");
+            Wait();
+        }
+
+        static void AvaliarBanda()
+        {
+            if (Bandas.Count == 0)
+            {
+                Console.WriteLine("Não tem bandas para avaliar :<");
+                Wait();
+                return;
+            }
+
+            ShowTitle("Escolha uma banda para avaliar: ");
+
+            ListarBandas();
+
+            var nomeBanda = GetUserInputStr();
+
+            if (!Bandas.ContainsKey(nomeBanda))
+            {
+                Console.Clear();
+                Console.WriteLine("Banda não encontrada!");
+                Wait();
+                return;
+            }
+
+            while (true)
+            {
+                var nota = GetUserInputInt($"{nomeBanda} selecionada. Digite uma nota:");
+
+                if (nota < 0)
+                {
+                    Console.WriteLine("A nota não pode ser menor que zero!");
+                    continue;
+                }
+                if (nota > 10)
+                {
+                    Console.WriteLine("A nota não pode ser maior que dez!");
+                    continue;
+                }
+
+                Bandas[nomeBanda].Add(nota);
+
+                Console.WriteLine("\nNota adicionada com sucesso!");
+
+                Wait();
+                return;
+            }
+        }
+
         static void MostrarBandas()
         {
             if (Bandas.Count == 0)
             {
                 Console.WriteLine("Não tem bandas para mostrar :<");
-                Thread.Sleep(ResponseDelay);
+                Wait();
                 return;
             }
 
             ShowTitle("Bandas: ");
 
-            foreach (var banda in Bandas.Keys)
-            {
-                Console.WriteLine($"- {banda}");
-            }
+            ListarBandas();
 
 
             Console.WriteLine("\n(Pressione 'enter' tecla para voltar)");
             Console.ReadLine();
+        }
+
+        static void ListarBandas()
+        {
+            foreach (var banda in Bandas.Keys)
+            {
+                Console.WriteLine($"- {banda}");
+            }
         }
 
         static void RegistrarBanda()
@@ -90,7 +173,12 @@
             Bandas.Add(nomeBanda, []);
 
             Console.WriteLine($"\nBanda {nomeBanda} registrada com sucesso!");
-            Thread.Sleep(ResponseDelay);
+            Wait();
+        }
+
+        static void Wait(int time = ResponseDelay)
+        {
+            Thread.Sleep(time);
         }
 
         static void ShowGreetings()
@@ -108,7 +196,7 @@
 
         static int GetUserInputInt(string inputText = "")
         {
-            Console.WriteLine(inputText);
+            Console.Write(inputText);
 
             while (true)
             {
@@ -132,7 +220,7 @@
 
         static string GetUserInputStr(string inputText = "")
         {
-            Console.WriteLine(inputText);
+            Console.Write(inputText);
 
             while (true)
             {
