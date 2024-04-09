@@ -3,7 +3,12 @@
     static public class ScreenSound
     {
 
-        static List<string> Bandas { get; set; } = ["Calipso", "Hitsune Miku", "Skillet"];
+        static Dictionary<string, List<int>> Bandas { get; set; } = new()
+        {
+            { "Calypso", [10] },
+            { "Skillet", [10] },
+            { "Hatsune Miko", [10] }
+        };
         static int ResponseDelay = 1500;
         static void Main(string[] args)
         {
@@ -67,7 +72,7 @@
 
             ShowTitle("Bandas: ");
 
-            foreach (var banda in Bandas)
+            foreach (var banda in Bandas.Keys)
             {
                 Console.WriteLine($"- {banda}");
             }
@@ -82,7 +87,7 @@
             ShowTitle("Registro de banda");
             var nomeBanda = GetUserInputStr("Digite o nome da banda: ");
 
-            Bandas.Add(nomeBanda);
+            Bandas.Add(nomeBanda, []);
 
             Console.WriteLine($"\nBanda {nomeBanda} registrada com sucesso!");
             Thread.Sleep(ResponseDelay);
